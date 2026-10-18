@@ -39,6 +39,16 @@
       "registrationDate": "2025-03-22",
       "createdAt": "2025-03-22T08:00:00Z",
       "updatedAt": "2025-03-22T08:00:00Z"
+    },
+    {
+      "name": "Juan Juan",
+      "contact": "09123456789",
+      "location": "Baan",
+      "farmSize": 5,
+      "registrationDate": "2026-10-18",
+      "createdAt": "2026-10-18T14:30:14.304Z",
+      "updatedAt": "2026-10-18T14:30:14.304Z",
+      "id": "luIcWrh"
     }
   ],
   "crops": [
@@ -168,17 +178,6 @@
       "updatedAt": "2025-08-10T08:00:00Z"
     },
     {
-      "id": "h2",
-      "cropId": "c6",
-      "quantity": 450,
-      "unit": "kg",
-      "harvestDate": "2025-08-20",
-      "qualityGrade": "A",
-      "notes": "Premium grade",
-      "createdAt": "2025-08-20T08:00:00Z",
-      "updatedAt": "2025-08-20T08:00:00Z"
-    },
-    {
       "id": "h3",
       "cropId": "c2",
       "quantity": 180,
@@ -188,6 +187,17 @@
       "notes": "Second harvest",
       "createdAt": "2025-09-01T08:00:00Z",
       "updatedAt": "2025-09-01T08:00:00Z"
+    },
+    {
+      "cropId": "c5",
+      "quantity": 100,
+      "unit": "kg",
+      "harvestDate": "2026-10-18",
+      "qualityGrade": "A",
+      "notes": "Excellent",
+      "createdAt": "2026-10-18T14:30:48.656Z",
+      "updatedAt": "2026-10-18T14:30:48.656Z",
+      "id": "9QmcDaM"
     }
   ],
   "tasks": []
