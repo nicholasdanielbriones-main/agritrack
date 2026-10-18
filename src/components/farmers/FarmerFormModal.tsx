@@ -1,13 +1,12 @@
-import { useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Farmer } from "@/types"
 
-// 1. Define the Zod Schema (Validation rules)
 const farmerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   contact: z.string().min(7, "Contact must be at least 7 digits"),
@@ -15,7 +14,6 @@ const farmerSchema = z.object({
   farmSize: z.coerce.number().positive("Farm size must be greater than 0"),
 })
 
-// Infer the TypeScript type from the schema
 type FarmerFormValues = z.infer<typeof farmerSchema>
 
 type FarmerFormModalProps = {
@@ -23,70 +21,103 @@ type FarmerFormModalProps = {
   onClose: () => void
   onSubmit: (data: FarmerFormValues) => void
   isSubmitting: boolean
+  initialData?: Farmer | null
 }
 
-export function FarmerFormModal({ isOpen, onClose, onSubmit, isSubmitting }: FarmerFormModalProps) {
-  // 2. Setup React Hook Form
+export function FarmerFormModal({ isOpen, onClose, onSubmit, isSubmitting, initialData }: FarmerFormModalProps) {
   const form = useForm<FarmerFormValues>({
     resolver: zodResolver(farmerSchema),
-    defaultValues: {
+    mode: "onTouched", // Shows error when you click away, clears when you type
+    defaultValues: initialData ? {
+      name: initialData.name,
+      contact: initialData.contact,
+      location: initialData.location,
+      farmSize: Number(initialData.farmSize) || 0,
+    } : {
       name: "",
       contact: "",
       location: "",
-      farmSize: 0,
+      farmSize: undefined,
     },
   })
-
-  // Reset form when modal opens/closes
-  useEffect(() => {
-    if (!isOpen) form.reset()
-  }, [isOpen, form])
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>New Farmer</DialogTitle>
+          <DialogTitle>{initialData ? "Edit Farmer" : "New Farmer"}</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
-          {/* Name Field */}
-          <div className="space-y-2">
-            <Label htmlFor="name">Full Name *</Label>
-            <Input id="name" {...form.register("name")} placeholder="e.g. Juan Cruz" />
-            {form.formState.errors.name && (
-              <p className="text-sm text-danger">{form.formState.errors.name.message}</p>
+          
+          {/* NAME FIELD */}
+          <Controller
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name *</Label>
+                <Input id="name" placeholder="e.g. Juan Cruz" {...field} />
+                {form.formState.errors.name && (
+                  <p className="text-sm text-danger">{form.formState.errors.name.message}</p>
+                )}
+              </div>
             )}
-          </div>
+          />
 
-          {/* Contact Field */}
-          <div className="space-y-2">
-            <Label htmlFor="contact">Contact Number *</Label>
-            <Input id="contact" {...form.register("contact")} placeholder="09171234567" />
-            {form.formState.errors.contact && (
-              <p className="text-sm text-danger">{form.formState.errors.contact.message}</p>
+          {/* CONTACT FIELD */}
+          <Controller
+            control={form.control}
+            name="contact"
+            render={({ field }) => (
+              <div className="space-y-2">
+                <Label htmlFor="contact">Contact Number *</Label>
+                <Input id="contact" placeholder="09171234567" {...field} />
+                {form.formState.errors.contact && (
+                  <p className="text-sm text-danger">{form.formState.errors.contact.message}</p>
+                )}
+              </div>
             )}
-          </div>
+          />
 
-          {/* Location Field */}
-          <div className="space-y-2">
-            <Label htmlFor="location">Location *</Label>
-            <Input id="location" {...form.register("location")} placeholder="e.g. Ampayon" />
-            {form.formState.errors.location && (
-              <p className="text-sm text-danger">{form.formState.errors.location.message}</p>
+          {/* LOCATION FIELD */}
+          <Controller
+            control={form.control}
+            name="location"
+            render={({ field }) => (
+              <div className="space-y-2">
+                <Label htmlFor="location">Location *</Label>
+                <Input id="location" placeholder="e.g. Ampayon" {...field} />
+                {form.formState.errors.location && (
+                  <p className="text-sm text-danger">{form.formState.errors.location.message}</p>
+                )}
+              </div>
             )}
-          </div>
+          />
 
-          {/* Farm Size Field */}
-          <div className="space-y-2">
-            <Label htmlFor="farmSize">Farm Size (hectares) *</Label>
-            <Input id="farmSize" type="number" step="0.1" {...form.register("farmSize")} placeholder="e.g. 2.5" />
-            {form.formState.errors.farmSize && (
-              <p className="text-sm text-danger">{form.formState.errors.farmSize.message}</p>
+          {/* FARM SIZE FIELD */}
+          <Controller
+            control={form.control}
+            name="farmSize"
+            render={({ field }) => (
+              <div className="space-y-2">
+                <Label htmlFor="farmSize">Farm Size (hectares) *</Label>
+                <Input 
+                  id="farmSize" 
+                  type="number" 
+                  step="0.1" 
+                  placeholder="e.g. 2.5" 
+                  {...field}
+                  value={field.value === undefined ? "" : field.value}
+                  onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                />
+                {form.formState.errors.farmSize && (
+                  <p className="text-sm text-danger">{form.formState.errors.farmSize.message}</p>
+                )}
+              </div>
             )}
-          </div>
+          />
 
-          {/* Actions */}
           <div className="flex justify-end gap-3 pt-4 border-t border-neutral-100 mt-6">
             <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
               Cancel
