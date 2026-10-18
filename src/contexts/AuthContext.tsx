@@ -15,18 +15,28 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>({
-    name: "Ana Villanueva",
-    email: "ana@agritrack.com",
-    role: "Admin",
+  const [user, setUser] = useState<User | null>(() => {
+    const saved = localStorage.getItem("agritrack_user")
+    return saved ? JSON.parse(saved) : null
   })
 
   const login = (email: string) => {
-    setUser({ name: "Ana Villanueva", email, role: "Admin" })
+    // Extract the name from the email (e.g., "arthur@agritrack.com" -> "Arthur")
+    const rawName = email.split("@")[0]
+    const formattedName = rawName.charAt(0).toUpperCase() + rawName.slice(1)
+
+    const newUser: User = { 
+      name: formattedName, 
+      email, 
+      role: "Admin" 
+    }
+    setUser(newUser)
+    localStorage.setItem("agritrack_user", JSON.stringify(newUser))
   }
 
   const logout = () => {
     setUser(null)
+    localStorage.removeItem("agritrack_user")
   }
 
   return (

@@ -21,22 +21,27 @@ export function Sidebar({ isMobileOpen, setIsMobileOpen }: SidebarProps) {
 
   return (
     <>
+      {/* Mobile overlay */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-neutral-900/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-neutral-900/20 backdrop-blur-sm lg:hidden"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
 
+      {/* Sidebar */}
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-neutral-200 flex flex-col transition-transform duration-300 ease-in-out lg:static lg:translate-x-0",
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="h-16 flex items-center justify-between px-6 border-b border-neutral-200">
-          <div className="flex items-center gap-2 text-primary-600 font-bold text-xl">
-            <Sprout className="h-6 w-6" />
+        {/* Logo area */}
+        <div className="h-16 flex items-center justify-between px-6 border-b border-neutral-100">
+          <div className="flex items-center gap-2.5 text-neutral-900 font-bold text-lg tracking-tight">
+            <div className="bg-primary-600 p-1.5 rounded-md">
+              <Sprout className="h-4 w-4 text-white" />
+            </div>
             <span>AgriTrack</span>
           </div>
           <button
@@ -47,6 +52,7 @@ export function Sidebar({ isMobileOpen, setIsMobileOpen }: SidebarProps) {
           </button>
         </div>
 
+        {/* Nav Links */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           {navigation.map((item) => (
             <NavLink
@@ -55,29 +61,30 @@ export function Sidebar({ isMobileOpen, setIsMobileOpen }: SidebarProps) {
               onClick={() => setIsMobileOpen(false)}
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
+                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-primary-50 text-primary-600 border-l-4 border-primary-600 rounded-l-none"
-                    : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 border-l-4 border-transparent"
+                    ? "bg-primary-50 text-primary-700"
+                    : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
                 )
               }
             >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
+              <item.icon className="h-4 w-4 flex-shrink-0" />
               {item.name}
             </NavLink>
           ))}
         </nav>
 
-        <div className="p-3 border-t border-neutral-200 space-y-1">
-          <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 transition-colors">
-            <Settings className="h-5 w-5 flex-shrink-0" />
+        {/* Bottom actions */}
+        <div className="p-3 border-t border-neutral-100 space-y-1">
+          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 transition-colors">
+            <Settings className="h-4 w-4 flex-shrink-0" />
             Settings
           </button>
           <button
             onClick={logout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-danger hover:bg-red-50 transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-neutral-600 hover:bg-red-50 hover:text-danger transition-colors"
           >
-            <LogOut className="h-5 w-5 flex-shrink-0" />
+            <LogOut className="h-4 w-4 flex-shrink-0" />
             Sign out
           </button>
         </div>

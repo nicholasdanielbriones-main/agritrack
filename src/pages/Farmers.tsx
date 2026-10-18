@@ -24,148 +24,81 @@ export function Farmers() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [selectedFarmer, setSelectedFarmer] = useState<Farmer | null>(null)
 
-  const handleOpenCreate = () => {
-    setSelectedFarmer(null)
-    setIsFormOpen(true)
-  }
-
-  const handleOpenEdit = (farmer: Farmer) => {
-    setSelectedFarmer(farmer)
-    setIsFormOpen(true)
-  }
-
-  const handleOpenDelete = (farmer: Farmer) => {
-    setSelectedFarmer(farmer)
-    setIsDeleteOpen(true)
-  }
+  const handleOpenCreate = () => { setSelectedFarmer(null); setIsFormOpen(true) }
+  const handleOpenEdit = (farmer: Farmer) => { setSelectedFarmer(farmer); setIsFormOpen(true) }
+  const handleOpenDelete = (farmer: Farmer) => { setSelectedFarmer(farmer); setIsDeleteOpen(true) }
 
   const handleFormSubmit = (data: any) => {
     if (selectedFarmer) {
-      updateMutation.mutate({ id: selectedFarmer.id, data }, {
-        onSuccess: () => setIsFormOpen(false),
-      })
+      updateMutation.mutate({ id: selectedFarmer.id, data }, { onSuccess: () => setIsFormOpen(false) })
     } else {
       const payload = { ...data, registrationDate: new Date().toISOString().split('T')[0] }
-      createMutation.mutate(payload, {
-        onSuccess: () => setIsFormOpen(false),
-      })
+      createMutation.mutate(payload, { onSuccess: () => setIsFormOpen(false) })
     }
   }
 
   const handleDeleteConfirm = () => {
     if (selectedFarmer) {
-      deleteMutation.mutate(selectedFarmer.id, {
-        onSuccess: () => setIsDeleteOpen(false),
-      })
+      deleteMutation.mutate(selectedFarmer.id, { onSuccess: () => setIsDeleteOpen(false) })
     }
   }
 
-  if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-semibold text-neutral-900">Farmers</h1>
-        <div className="bg-white rounded-card border border-neutral-200 p-8 text-center text-neutral-500">
-          Loading farmers...
-        </div>
-      </div>
-    )
-  }
-
-  if (isError) {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-semibold text-neutral-900">Farmers</h1>
-        <div className="bg-red-50 text-danger p-4 rounded-card border border-red-200 flex items-center gap-3">
-          <AlertCircle className="h-5 w-5" />
-          <p>Failed to load farmers: {error.message}</p>
-        </div>
-      </div>
-    )
-  }
+  if (isLoading) return <div className="p-8 text-center text-neutral-500 animate-pulse">Loading farmers...</div>
+  if (isError) return <div className="p-4 bg-red-50 text-danger rounded-xl border border-red-200 flex items-center gap-3"><AlertCircle className="h-5 w-5" /> Error: {error.message}</div>
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-300">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-neutral-900 tracking-tight">Farmers</h1>
+          <h1 className="text-2xl font-bold text-neutral-900 tracking-tight">Farmers</h1>
           <p className="text-sm text-neutral-500 mt-1">{farmers?.length || 0} total registered</p>
         </div>
-        <Button onClick={handleOpenCreate} className="w-full sm:w-auto">
-          <Plus className="h-4 w-4 mr-2" />
-          New farmer
+        <Button onClick={handleOpenCreate} className="w-full sm:w-auto h-10 shadow-sm active:scale-95 transition-all">
+          <Plus className="h-4 w-4 mr-2" /> New farmer
         </Button>
       </div>
 
-      <div className="bg-white rounded-card border border-neutral-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-neutral-200 shadow-sm overflow-hidden">
         <Table>
-          <TableHeader>
-            <TableRow className="bg-neutral-50 hover:bg-neutral-50">
-              <TableHead className="font-semibold text-neutral-600">Name</TableHead>
-              <TableHead className="font-semibold text-neutral-600">Contact</TableHead>
-              <TableHead className="font-semibold text-neutral-600">Location</TableHead>
-              <TableHead className="font-semibold text-neutral-600">Farm Size</TableHead>
-              <TableHead className="text-right font-semibold text-neutral-600">Actions</TableHead>
+          <TableHeader className="bg-neutral-50/50 text-neutral-500 text-xs uppercase tracking-wider border-b border-neutral-100">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="font-medium px-5 py-3">Name</TableHead>
+              <TableHead className="font-medium px-5 py-3">Contact</TableHead>
+              <TableHead className="font-medium px-5 py-3">Location</TableHead>
+              <TableHead className="font-medium px-5 py-3">Farm Size</TableHead>
+              <TableHead className="text-right font-medium px-5 py-3">Actions</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="divide-y divide-neutral-100">
             {farmers?.map((farmer) => (
-              <TableRow key={farmer.id}>
-                <TableCell className="font-medium text-neutral-900">{farmer.name}</TableCell>
-                <TableCell className="text-neutral-600 font-mono text-sm">{farmer.contact}</TableCell>
-                <TableCell className="text-neutral-600">{farmer.location}</TableCell>
-                <TableCell className="text-neutral-600 font-mono text-sm">{farmer.farmSize} ha</TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      onClick={() => handleOpenEdit(farmer)}
-                      aria-label={`Edit ${farmer.name}`}
-                    >
-                      <Pencil className="h-4 w-4 text-neutral-500 hover:text-primary-600" />
+              <TableRow key={farmer.id} className="hover:bg-neutral-50/50 transition-colors">
+                <TableCell className="font-medium text-neutral-900 px-5 py-4">{farmer.name}</TableCell>
+                <TableCell className="text-neutral-600 px-5 py-4">{farmer.contact}</TableCell>
+                <TableCell className="text-neutral-600 px-5 py-4">{farmer.location}</TableCell>
+                <TableCell className="text-neutral-600 px-5 py-4">{farmer.farmSize} ha</TableCell>
+                <TableCell className="text-right px-5 py-4">
+                  <div className="flex justify-end gap-1">
+                    <Button variant="ghost" size="icon" onClick={() => handleOpenEdit(farmer)} className="h-8 w-8 text-neutral-400 hover:text-primary-600">
+                      <Pencil className="h-4 w-4" />
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      onClick={() => handleOpenDelete(farmer)}
-                      aria-label={`Delete ${farmer.name}`}
-                    >
-                      <Trash2 className="h-4 w-4 text-neutral-500 hover:text-danger" />
+                    <Button variant="ghost" size="icon" onClick={() => handleOpenDelete(farmer)} className="h-8 w-8 text-neutral-400 hover:text-danger hover:bg-red-50">
+                      <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </TableCell>
               </TableRow>
             ))}
-            
             {farmers?.length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-neutral-500">
-                  No farmers found. Click "New farmer" to add one.
-                </TableCell>
+                <TableCell colSpan={5} className="text-center py-10 text-neutral-500">No farmers found.</TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
 
-      {/* The key prop is the magic fix. It forces the form to rebuild every time! */}
-      <FarmerFormModal 
-        key={selectedFarmer?.id || 'new'}
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        onSubmit={handleFormSubmit}
-        isSubmitting={createMutation.isPending || updateMutation.isPending}
-        initialData={selectedFarmer}
-      />
-
-      <ConfirmDialog
-        isOpen={isDeleteOpen}
-        onClose={() => setIsDeleteOpen(false)}
-        onConfirm={handleDeleteConfirm}
-        title="Delete farmer?"
-        description={`This will permanently remove ${selectedFarmer?.name}. This action cannot be undone.`}
-        isLoading={deleteMutation.isPending}
-      />
+      <FarmerFormModal key={selectedFarmer?.id || 'new'} isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onSubmit={handleFormSubmit} isSubmitting={createMutation.isPending || updateMutation.isPending} initialData={selectedFarmer} />
+      <ConfirmDialog isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} onConfirm={handleDeleteConfirm} title="Delete farmer?" description={`This will permanently remove ${selectedFarmer?.name}.`} isLoading={deleteMutation.isPending} />
     </div>
   )
 }
