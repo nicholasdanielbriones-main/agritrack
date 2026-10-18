@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 export function Login() {
-  const [email, setEmail] = useState("ana@agritrack.com")
-  const [password, setPassword] = useState("password123")
+  // Started as empty strings for a professional look
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -17,8 +18,9 @@ export function Login() {
     e.preventDefault()
     setIsLoading(true)
     
+    // Simulate network delay
     setTimeout(() => {
-      login(email)
+      login(username) // Passes the username to AuthContext
       navigate("/dashboard")
     }, 800)
   }
@@ -43,12 +45,13 @@ export function Login() {
         {/* Form */}
         <form onSubmit={handleLogin} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="username">Username</Label>
             <Input 
-              id="email" 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="username" 
+              type="text" 
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="h-11 bg-white/50 focus:bg-white"
               required
             />
@@ -59,6 +62,7 @@ export function Login() {
             <Input 
               id="password" 
               type="password" 
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="h-11 bg-white/50 focus:bg-white"

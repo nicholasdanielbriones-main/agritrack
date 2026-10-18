@@ -2,13 +2,13 @@ import { createContext, useContext, useState, ReactNode } from "react"
 
 type User = {
   name: string
-  email: string
+  email: string // We will still store it as 'email' under the hood, but it will hold the username
   role: "Admin" | "Field Officer" | "Farmer"
 }
 
 type AuthContextType = {
   user: User | null
-  login: (email: string) => void
+  login: (username: string) => void
   logout: () => void
 }
 
@@ -20,14 +20,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return saved ? JSON.parse(saved) : null
   })
 
-  const login = (email: string) => {
-    // Extract the name from the email (e.g., "arthur@agritrack.com" -> "Arthur")
-    const rawName = email.split("@")[0]
-    const formattedName = rawName.charAt(0).toUpperCase() + rawName.slice(1)
+  const login = (username: string) => {
+    // Format the username (e.g., "ana" -> "Ana")
+    const formattedName = username.charAt(0).toUpperCase() + username.slice(1)
 
     const newUser: User = { 
       name: formattedName, 
-      email, 
+      email: `${username}@agritrack.com`, // Generate a fake email for the profile dropdown
       role: "Admin" 
     }
     setUser(newUser)
