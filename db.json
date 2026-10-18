@@ -1,19 +1,31 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
+  "farmers": [
+    { "id": "f1", "name": "Juan Cruz", "contact": "09171234567", "location": "Ampayon", "farmSize": 2.5, "registrationDate": "2025-01-15", "createdAt": "2025-01-15T08:00:00Z", "updatedAt": "2025-01-15T08:00:00Z" },
+    { "id": "f2", "name": "Maria Reyes", "contact": "09182234567", "location": "Buenavista", "farmSize": 1.8, "registrationDate": "2025-02-02", "createdAt": "2025-02-02T08:00:00Z", "updatedAt": "2025-02-02T08:00:00Z" },
+    { "id": "f3", "name": "Pedro Santos", "contact": "09193234567", "location": "Libertad", "farmSize": 3.2, "registrationDate": "2025-02-20", "createdAt": "2025-02-20T08:00:00Z", "updatedAt": "2025-02-20T08:00:00Z" },
+    { "id": "f4", "name": "Ana Villanueva", "contact": "09204234567", "location": "Ampayon", "farmSize": 1.1, "registrationDate": "2025-03-05", "createdAt": "2025-03-05T08:00:00Z", "updatedAt": "2025-03-05T08:00:00Z" },
+    { "id": "f5", "name": "Carlo Mendoza", "contact": "09215234567", "location": "Buenavista", "farmSize": 4.0, "registrationDate": "2025-03-22", "createdAt": "2025-03-22T08:00:00Z", "updatedAt": "2025-03-22T08:00:00Z" }
   ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
+  "crops": [
+    { "id": "c1", "cropName": "Rice", "variety": "NSIC Rc222", "plantingDate": "2025-05-01", "harvestDate": "2025-09-15", "status": "Growing", "farmerId": "f1", "createdAt": "2025-05-01T08:00:00Z", "updatedAt": "2025-05-01T08:00:00Z" },
+    { "id": "c2", "cropName": "Corn", "variety": "Pioneer 30T80", "plantingDate": "2025-04-10", "harvestDate": "2025-08-10", "status": "Harvested", "farmerId": "f2", "createdAt": "2025-04-10T08:00:00Z", "updatedAt": "2025-08-10T08:00:00Z" },
+    { "id": "c3", "cropName": "Tomato", "variety": "Diamante", "plantingDate": "2025-06-01", "harvestDate": "2025-09-01", "status": "Growing", "farmerId": "f3", "createdAt": "2025-06-01T08:00:00Z", "updatedAt": "2025-06-01T08:00:00Z" },
+    { "id": "c4", "cropName": "Eggplant", "variety": "Long Purple", "plantingDate": "2025-05-20", "harvestDate": "2025-09-05", "status": "Growing", "farmerId": "f4", "createdAt": "2025-05-20T08:00:00Z", "updatedAt": "2025-05-20T08:00:00Z" },
+    { "id": "c5", "cropName": "Cabbage", "variety": "Scorpio", "plantingDate": "2025-07-01", "harvestDate": "2025-10-15", "status": "Planned", "farmerId": "f5", "createdAt": "2025-07-01T08:00:00Z", "updatedAt": "2025-07-01T08:00:00Z" },
+    { "id": "c6", "cropName": "Rice", "variety": "NSIC Rc160", "plantingDate": "2025-04-15", "harvestDate": "2025-08-20", "status": "Harvested", "farmerId": "f1", "createdAt": "2025-04-15T08:00:00Z", "updatedAt": "2025-08-20T08:00:00Z" }
   ],
-  "profile": {
-    "name": "typicode"
-  }
+  "inventory": [
+    { "id": "i1", "itemName": "Urea Fertilizer", "category": "Fertilizer", "quantity": 40, "unit": "kg", "supplier": "AgroSupply Co.", "reorderLevel": 20, "createdAt": "2025-01-01T08:00:00Z", "updatedAt": "2025-01-01T08:00:00Z" },
+    { "id": "i2", "itemName": "Complete 14-14-14", "category": "Fertilizer", "quantity": 12, "unit": "kg", "supplier": "AgroSupply Co.", "reorderLevel": 20, "createdAt": "2025-01-01T08:00:00Z", "updatedAt": "2025-01-01T08:00:00Z" },
+    { "id": "i3", "itemName": "Rice Seeds NSIC", "category": "Seeds", "quantity": 80, "unit": "kg", "supplier": "PhilRice", "reorderLevel": 30, "createdAt": "2025-01-01T08:00:00Z", "updatedAt": "2025-01-01T08:00:00Z" },
+    { "id": "i4", "itemName": "Hand Trowel", "category": "Tools", "quantity": 15, "unit": "pcs", "supplier": "FarmTools PH", "reorderLevel": 5, "createdAt": "2025-01-01T08:00:00Z", "updatedAt": "2025-01-01T08:00:00Z" },
+    { "id": "i5", "itemName": "Knapsack Sprayer", "category": "Tools", "quantity": 3, "unit": "pcs", "supplier": "FarmTools PH", "reorderLevel": 5, "createdAt": "2025-01-01T08:00:00Z", "updatedAt": "2025-01-01T08:00:00Z" },
+    { "id": "i6", "itemName": "Pesticide Malathion", "category": "Pesticide", "quantity": 0, "unit": "L", "supplier": "CropGuard", "reorderLevel": 10, "createdAt": "2025-01-01T08:00:00Z", "updatedAt": "2025-01-01T08:00:00Z" }
+  ],
+  "harvests": [
+    { "id": "h1", "cropId": "c2", "quantity": 320, "unit": "kg", "harvestDate": "2025-08-10", "qualityGrade": "A", "notes": "Good yield", "createdAt": "2025-08-10T08:00:00Z", "updatedAt": "2025-08-10T08:00:00Z" },
+    { "id": "h2", "cropId": "c6", "quantity": 450, "unit": "kg", "harvestDate": "2025-08-20", "qualityGrade": "A", "notes": "Premium grade", "createdAt": "2025-08-20T08:00:00Z", "updatedAt": "2025-08-20T08:00:00Z" },
+    { "id": "h3", "cropId": "c2", "quantity": 180, "unit": "kg", "harvestDate": "2025-09-01", "qualityGrade": "B", "notes": "Second harvest", "createdAt": "2025-09-01T08:00:00Z", "updatedAt": "2025-09-01T08:00:00Z" }
+  ],
+  "tasks": []
 }
