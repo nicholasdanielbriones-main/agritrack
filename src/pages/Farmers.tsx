@@ -1,6 +1,8 @@
-import { useFarmers } from "@/hooks/useFarmers"
+import { useState } from "react"
+import { useFarmers, useCreateFarmer } from "@/hooks/useFarmers"
 import { Button } from "@/components/ui/button"
 import { Plus, AlertCircle } from "lucide-react"
+import { FarmerFormModal } from "@/components/farmers/FarmerFormModal"
 import {
   Table,
   TableBody,
@@ -12,6 +14,19 @@ import {
 
 export function Farmers() {
   const { data: farmers, isLoading, isError, error } = useFarmers()
+  const createMutation = useCreateFarmer()
+  
+  // State to control the modal
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleCreateSubmit = (data: any) => {
+    // Add a default registration date for now
+    const payload = { ...data, registrationDate: new Date().toISOString().split('T')[0] }
+    
+    createMutation.mutate(payload, {
+      onSuccess: () => setIsModalOpen(false), // Close modal on success
+    })
+  }
 
   // 1. Loading State
   if (isLoading) {
@@ -38,10 +53,9 @@ export function Farmers() {
     )
   }
 
-  // 3. Success State (Data)
+  // 3. Success State
   return (
     <div className="space-y-6">
-      {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-neutral-900 tracking-tight">Farmers</h1>
@@ -49,13 +63,12 @@ export function Farmers() {
             {farmers?.length || 0} total registered
           </p>
         </div>
-        <Button className="w-full sm:w-auto">
+        <Button onClick={() => setIsModalOpen(true)} className="w-full sm:w-auto">
           <Plus className="h-4 w-4 mr-2" />
           New farmer
         </Button>
       </div>
 
-      {/* Data Table */}
       <div className="bg-white rounded-card border border-neutral-200 shadow-sm overflow-hidden">
         <Table>
           <TableHeader>
@@ -76,7 +89,6 @@ export function Farmers() {
               </TableRow>
             ))}
             
-            {/* Empty State */}
             {farmers?.length === 0 && (
               <TableRow>
                 <TableCell colSpan={4} className="text-center py-8 text-neutral-500">
@@ -87,6 +99,14 @@ export function Farmers() {
           </TableBody>
         </Table>
       </div>
+
+      {/* The Modal */}
+      <FarmerFormModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleCreateSubmit}
+        isSubmitting={createMutation.isPending}
+      />
     </div>
   )
 }
